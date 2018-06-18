@@ -43,7 +43,7 @@ for item in hmg_separated:
 
 tfidf_hmg_VCGS = get_tfidf_VCGS(hmg_data, 0.05, 5)#get_tfidf_VCGS is a function which is the same as I implemented on the previous inspec datas. Here the R is set to 5 while D is set to 5 percent
 tfidf_hmg_VCGS_1 = tfidf_hmg_VCGS.values.tolist()
-clusters, clusters_dict, clusters_docs = maximum_clustering(tfidf_hmg_VCGS_1, 0.9)#also same as I used before
+clusters, clusters_dict, clusters_docs = maximum_clustering_random(tfidf_hmg_VCGS_1, 0.999)#also same as I used before
 clusters_Auto_dict = clusters_dict
 clusters_Auto = clusters_docs
 
@@ -74,18 +74,24 @@ for docs in clusters_Mesh:
 
 #homogenety
 homo_for_auto = []
+homo_score = []
 
 for cluster in Auto_homo_check:
     index_Mesh = sorted(range(len(cluster)), key=lambda i: cluster[i])[-1:]
     tag = hmg_tags_set[index_Mesh[0]]
     if sum(cluster) != 0:
         homo = cluster[index_Mesh[0]]/sum(cluster)
-        homo_tuple = (homo, tag)    
+        homo_tuple = (homo, tag) 
+        homo_score = homo_score + [homo]
     else:
         homo = 0
         homo_tuple = (homo, 'others')
+        homo_score = homo_score + [homo]
     homo_for_auto = homo_for_auto + [homo_tuple]
-    
+    mean_homo = np.mean(homo_score)
+
+homo_for_auto
+mean_homo
 
 
 
